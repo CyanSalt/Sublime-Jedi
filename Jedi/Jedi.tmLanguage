@@ -24,6 +24,23 @@
 		</dict>
 		<dict>
 			<key>comment</key>
+			<string>Embedded PHP Code.</string>
+			<key>name</key>
+			<string>source.php.embedded</string>
+			<key>begin</key>
+			<string>^(\s*)(-)\s*</string>
+			<key>end</key>
+			<string>^(?!(\1\s)|\s*$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.js</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
 			<string>Unbuffered (jedi-only) inline comments.</string>
 			<key>name</key>
 			<string>comment.unbuffered.inline.jedi</string>
