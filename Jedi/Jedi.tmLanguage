@@ -98,11 +98,36 @@
 		</dict>
 		<dict>
 			<key>comment</key>
+			<string>Style tag with CSS code.</string>
+			<key>name</key>
+			<string>source.css.embedded</string>
+			<key>begin</key>
+			<string>^(\s*)(style)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.style.jedi</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>^(?!(\1\s)|\s*$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#style_statement</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
 			<string>Mixin block</string>
 			<key>name</key>
 			<string>source.block.mixin.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)::(a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|html|iframe|img|input|i|label|legend|link|li|meta|noscript|object|ol|optgroup|option|pre|p|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#\w*)?)\s*\(\)</string>
+			<string>^(\s*)::(aside|a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|header|head|html|iframe|img|input|i|label|legend|link|li|meta|nav|noscript|object|ol|optgroup|option|pre|p|section|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(\)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -204,7 +229,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#if_else_let_statement</string>
+					<string>#general_statement</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -256,7 +281,7 @@
 			<key>name</key>
 			<string>source.block.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)(a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|html|iframe|img|input|i|label|legend|link|li|meta|noscript|object|ol|optgroup|option|pre|p|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#\w*)?)</string>
+			<string>^(\s*)(aside|a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|header|head|html|iframe|img|input|i|label|legend|link|li|meta|nav|noscript|object|ol|optgroup|option|pre|p|section|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#[\w\-_]*)?)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -265,6 +290,11 @@
 					<string>entity.name.tag.jedi</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.jedi</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>support.class.selector.jedi</string>
@@ -331,30 +361,40 @@
 				</dict>
 			</array>
 		</dict>
-		<key>tag_selector</key>
+		<key>style_statement</key>
 		<dict>
 			<key>begin</key>
-			<string>(a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|html|iframe|img|input|i|label|legend|link|li|meta|noscript|object|ol|optgroup|option|pre|p|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#\w*)?)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.other.attribute-name.jedi</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>string.quoted.attribute.jedi</string>
-				</dict>
-			</dict>
+			<string>^(\s*)!</string>
 			<key>end</key>
-			<string>\s|$</string>
+			<string>^(?!(\1\s)|\s*$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>/\*</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.comment.css</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\*/|^(?!(\1\s)|\s*$)</string>
+					<key>name</key>
+					<string>comment.block.css</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.css</string>
+				</dict>
+			</array>
 		</dict>
 		<key>tag_attribute</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(@[\w\-_]*\s*=\s*)(('[^']*')|("[^"]*"))</string>
+			<string>(\s*)(@[\w\-_]*(\s*=\s*)?)(('[^']*')|("[^"]*"))?</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -362,7 +402,7 @@
 					<key>name</key>
 					<string>entity.other.attribute-name.jedi</string>
 				</dict>
-				<key>3</key>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>string.quoted.attribute.jedi</string>
@@ -418,10 +458,10 @@
 			<key>end</key>
 			<string>$</string>
 		</dict>
-		<key>if_else_let_statement</key>
+		<key>general_statement</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(let|if|else|else if)\s*</string>
+			<string>(\s*)(let|if|else|else if|unsafe)\s*</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
