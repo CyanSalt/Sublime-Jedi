@@ -30,7 +30,7 @@
 			<key>begin</key>
 			<string>^(\s*)(-)\s*</string>
 			<key>end</key>
-			<string>^(?!(\1\s)|\s*$)</string>
+			<string>^(?!\n|\s*$)</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -127,7 +127,7 @@
 			<key>name</key>
 			<string>source.block.mixin.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)::(aside|a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|header|head|html|iframe|img|input|i|label|legend|link|li|meta|nav|noscript|object|ol|optgroup|option|pre|p|section|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(\)</string>
+			<string>^(\s*)::([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(([\s\w,]*)\)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -139,6 +139,11 @@
 				<dict>
 					<key>name</key>
 					<string>support.class.selector.jedi</string>
+				</dict>
+				<key>6</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.mixin.jedi</string>
 				</dict>
 			</dict>
 			<key>end</key>
@@ -191,34 +196,11 @@
 		</dict>
 		<dict>
 			<key>comment</key>
-			<string>External Keyword.</string>
-			<key>name</key>
-			<string>source.block.external.jedi</string>
-			<key>begin</key>
-			<string>^(\s*):\s*(external)\b(.*)$</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control.import.jedi</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.import.jedi</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>$</string>
-		</dict>
-		<dict>
-			<key>comment</key>
 			<string>Flow Keywords.</string>
 			<key>name</key>
 			<string>source.block.flow.jedi</string>
 			<key>begin</key>
-			<string>^(\s*):\s*</string>
+			<string>^(\s*)(?=:\s*)</string>
 			<key>end</key>
 			<string>^(?!(\1\s)|\s*$)</string>
 			<key>patterns</key>
@@ -247,7 +229,7 @@
 			<key>name</key>
 			<string>source.block.layout.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)(#[\w-]*)(::after)?</string>
+			<string>^(\s*)(#[\w\-_]*)(::after)?</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -281,7 +263,7 @@
 			<key>name</key>
 			<string>source.block.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)(aside|a|blockquote|br|button|code|dd|del|div|dl|dt|em|fieldset|figcaption|figure|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|header|head|html|iframe|img|input|i|label|legend|link|li|meta|nav|noscript|object|ol|optgroup|option|pre|p|section|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|title|tr|ul)((\.[\w\-_]*\b)*(#[\w\-_]*)?)</string>
+			<string>^(\s*)([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -290,11 +272,6 @@
 					<string>entity.name.tag.jedi</string>
 				</dict>
 				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.tag.jedi</string>
-				</dict>
-				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>support.class.selector.jedi</string>
@@ -441,7 +418,7 @@
 		<key>for_in_statement</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(for)\s*((\([\s\w,]*\))|\w*)\s*(in)</string>
+			<string>:(\s*)(for)\s*((\([\s\w,]*\))|\w*)\s*(in)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -461,7 +438,7 @@
 		<key>general_statement</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(let|if|else|else if|unsafe)\s*</string>
+			<string>:(\s*)(let|if|else if|else|external|unsafe)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
