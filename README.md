@@ -26,7 +26,7 @@ Since it use .tmLanguage, it may support TextMate or legacy versions of Sublime 
  
     OR
     
- * Copy the file 'Jedi.sublime-package' into 'Installed Packages' folder
+ * Copy the file ['Jedi.sublime-package'](https://raw.githubusercontent.com/cyansalt/sublime-jedi/master/Jedi.sublime-package) into 'Installed Packages' folder
  (with the same directory of the folder 'Package').
  * Restart Sublime Text.
  
