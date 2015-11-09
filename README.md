@@ -4,12 +4,7 @@ A Jedi syntax highlight plugin for Sublime Text/TextMate.
 
 #### What's Jedi?
 
-Jedi is a new template language (maybe do more such as url routing in the future)
-inspired by
-[Jade](https://github.com/visionmedia/jade) /
-[Coffeekup](https://github.com/mauricemach/coffeekup)
-and many others. It's still in beta phase but we already use it in
-production (http://m.baixing.com/) for several years.
+[Jedi](https://github.com/baixing/jedi) is a template language we use in production.
 
 #### Sublime-Jedi
 
