@@ -84,7 +84,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#script_mixin</string>
+					<string>#tag_mixin</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -287,6 +287,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#tag_mixin</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>$self</string>
 				</dict>
 			</array>
@@ -395,7 +399,7 @@
 				</dict>
 			</dict>
 		</dict>
-		<key>script_mixin</key>
+		<key>tag_mixin</key>
 		<dict>
 			<key>begin</key>
 			<string>(\s*)(?=\=)</string>
@@ -410,11 +414,11 @@
 					<key>name</key>
 					<string>keyword.operator.jedi</string>
 				</dict>
-				<key>2</key>
+				<!--<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.import.jedi</string>
-				</dict>
+					<string>variable.parameter.mixin.jedi</string>
+				</dict>-->
 			</dict>
 		</dict>
 		<key>for_in_statement</key>
