@@ -127,7 +127,7 @@
 			<key>name</key>
 			<string>source.block.mixin.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)::([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(([\s\w,]*)\)</string>
+			<string>^(\s*)::([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(([\s\w\-\$_,]*)\)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -371,49 +371,46 @@
 		<key>tag_attribute</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(@[\w\-_]*(\s*=\s*)?)(('[^']*')|("[^"]*"))?</string>
-			<key>beginCaptures</key>
+			<string>(\s*)(?=@)</string>
+			<key>end</key>
+			<string>$</string>
+			<key>match</key>
+			<string>\s+(@[\w\-_]*(\s*=\s*)?)(('[^']*')|("[^"]*"))?</string>
+			<key>captures</key>
 			<dict>
-				<key>2</key>
+				<key>1</key>
 				<dict>
 					<key>name</key>
 					<string>entity.other.attribute-name.jedi</string>
 				</dict>
-				<key>4</key>
+				<key>3</key>
 				<dict>
 					<key>name</key>
 					<string>string.quoted.attribute.jedi</string>
 				</dict>
 			</dict>
-			<key>end</key>
-			<string>$</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#tag_attribute</string>
-				</dict>
-			</array>
 		</dict>
 		<key>script_mixin</key>
 		<dict>
 			<key>begin</key>
-			<string>(\s*)(=)\s*\[([\s\w,]*)\]</string>
-			<key>beginCaptures</key>
+			<string>(\s*)(?=\=)</string>
+			<key>end</key>
+			<string>$</string>
+			<key>match</key>
+			<string>(=)\s*\[([\s\w,]*)\]</string>
+			<key>captures</key>
 			<dict>
-				<key>2</key>
+				<key>1</key>
 				<dict>
 					<key>name</key>
 					<string>keyword.operator.jedi</string>
 				</dict>
-				<key>3</key>
+				<key>2</key>
 				<dict>
 					<key>name</key>
 					<string>variable.parameter.import.jedi</string>
 				</dict>
 			</dict>
-			<key>end</key>
-			<string>$</string>
 		</dict>
 		<key>for_in_statement</key>
 		<dict>
