@@ -127,7 +127,7 @@
 			<key>name</key>
 			<string>source.block.mixin.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)::([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)\s*\(([\s\w\-\$_,]*)\)</string>
+			<string>^(\s*)::([A-Za-z]+\d*)((\.[\w\-_]+\b)*(#[\w\-_]+)?)\s*\(([\s\w\-\$_,]*)\)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -138,7 +138,7 @@
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>support.class.selector.jedi</string>
+					<string>constant.selector.tag.jedi</string>
 				</dict>
 				<key>6</key>
 				<dict>
@@ -229,7 +229,7 @@
 			<key>name</key>
 			<string>source.block.layout.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)(#[\w\-_]*)(::after)?</string>
+			<string>^(\s*)(#[\w\-_]+)(::after)?</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -263,7 +263,7 @@
 			<key>name</key>
 			<string>source.block.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)([A-Za-z]*\d*)((\.[\w\-_]*\b)*(#[\w\-_]*)?)</string>
+			<string>^(\s*)([A-Za-z]+\d*)((\.[\w\-_]+\b)*(#[\w\-_]+)?)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -274,7 +274,7 @@
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>support.class.selector.jedi</string>
+					<string>constant.language.js</string>
 				</dict>
 			</dict>
 			<key>end</key>
@@ -375,13 +375,18 @@
 			<key>end</key>
 			<string>$</string>
 			<key>match</key>
-			<string>\s+(@[\w\-_]*(\s*=\s*)?)(('[^']*')|("[^"]*"))?</string>
+			<string>\s+(@[\w\-_]+)(\s*\=\s*)?(('[^']*')|("[^"]*"))?</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
 					<string>entity.other.attribute-name.jedi</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.separator.key-value.jedi</string>
 				</dict>
 				<key>3</key>
 				<dict>
