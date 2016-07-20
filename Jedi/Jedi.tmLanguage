@@ -65,13 +65,23 @@
 			<key>name</key>
 			<string>source.js.embedded</string>
 			<key>begin</key>
-			<string>^(\s*)(script)</string>
+			<string>^(\s*)(script)((\.[\w\-_]+\b)*(#[\w\-_]+)?)(\s*(if)\b)?</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
 					<string>entity.name.tag.script.jedi</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>constant.language.js</string>
+				</dict>
+				<key>7</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.jedi</string>
 				</dict>
 			</dict>
 			<key>end</key>
@@ -138,7 +148,7 @@
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>constant.selector.tag.jedi</string>
+					<string>constant.language.js</string>
 				</dict>
 				<key>6</key>
 				<dict>
@@ -263,7 +273,7 @@
 			<key>name</key>
 			<string>source.block.jedi</string>
 			<key>begin</key>
-			<string>^(\s*)([A-Za-z]+\d*)((\.[\w\-_]+\b)*(#[\w\-_]+)?)</string>
+			<string>^(\s*)([A-Za-z]+\d*)(\s*&gt;\s*[A-Za-z]+\d*)?((\.[\w\-_]+\b)*(#[\w\-_]+)?)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
@@ -272,6 +282,11 @@
 					<string>entity.name.tag.jedi</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.jedi</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>constant.language.js</string>
