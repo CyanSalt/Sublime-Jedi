@@ -206,6 +206,45 @@
 		</dict>
 		<dict>
 			<key>comment</key>
+			<string>External Keyword.</string>
+			<key>name</key>
+			<string>source.block.external.jedi</string>
+			<key>begin</key>
+			<string>^(\s*):\s*(external)\b([^,]*)(,([^,]*))*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.external.jedi</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.jedi</string>
+				</dict>
+				<key>5</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.jedi</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>^(?!(\1\s)|\s*$)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.block.layout.jedi</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
 			<string>Flow Keywords.</string>
 			<key>name</key>
 			<string>source.block.flow.jedi</string>
@@ -459,7 +498,7 @@
 		<key>general_statement</key>
 		<dict>
 			<key>begin</key>
-			<string>:(\s*)(let|if|else if|else|external|unsafe)\b</string>
+			<string>:(\s*)(let|if|else if|else|unsafe)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>2</key>
