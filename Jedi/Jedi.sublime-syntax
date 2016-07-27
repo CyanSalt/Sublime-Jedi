@@ -1,0 +1,270 @@
+%YAML 1.2
+---
+name: Jedi
+file_extensions:
+  - jedi
+scope: source.jedi
+contexts:
+  main:
+    - include: keyword-top-level
+    - include: comments-top-level
+    - include: layout-top-level
+
+  comments-top-level:
+    - include: comments-unbuffered
+    - include: comments-buffered
+
+  keyword-top-level:
+    - include: external-statement
+    - include: import-statement
+    - include: unsafe-statement
+    - include: if-statement
+    - include: else-statement
+    - include: let-statement
+    - include: for-statement
+    - include: php-embedded
+
+  layout-top-level:
+    - include: block-extended
+    - include: html-tag
+
+  html-tag:
+    - include: script-tag
+    - include: style-tag
+    - include: common-tag
+
+  comments-unbuffered:
+    - match: ^(\s*)--
+      scope: punctuation.definition.comment.jedi
+      push: 
+        - meta_scope: comment.block.unbuffered.jedi
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+    - match: //
+      scope: punctuation.definition.comment.jedi
+      push:
+        - meta_scope: comment.line.unbuffered.jedi
+        - match: \n
+          pop: true
+
+  comments-buffered:
+    - match: ^(\s*)!
+      scope: punctuation.definition.comment.jedi
+      push:
+        - meta_scope: string.comment.block.buffered.jedi
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+    - match: ^\s*!
+      scope: punctuation.definition.comment.jedi
+      push:
+        - meta_scope: string.comment.line.buffered.jedi
+        - match: \n
+          pop: true
+
+  php-embedded:
+    - match: ^\s*-\s*
+      # scope: punctuation.section.embedded.begin.php
+      push:
+        - meta_scope: meta.embedded.line.php
+        - meta_content_scope: source.php
+        - match: \n
+          pop: true
+        - include: 'scope:source.php'
+
+  script-tag:
+    - match: ^(\s*)(script)
+      captures:
+        2: entity.name.tag.script.jedi
+      push:
+        - meta_content_scope: source.js.embedded.jedi
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - match: ^(\s*)!
+          scope: punctuation.definition.comment.jedi
+          push:
+            - meta_scope: meta.embedded.block.js
+            - meta_content_scope: source.js
+            - match: ^(?!(\1\s)|\s*$)
+              pop: true
+            - include: 'scope:source.js'
+        - include: tag-attributes
+
+  style-tag:
+    - match: ^(\s*)(style)
+      captures:
+        2: entity.name.tag.style.jedi
+      push:
+        - meta_content_scope: source.css.embedded.jedi
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - match: ^(\s*)!
+          scope: punctuation.definition.comment.jedi
+          push:
+            - meta_scope: meta.embedded.block.css
+            - meta_content_scope: source.css
+            - match: ^(?!(\1\s)|\s*$)
+              pop: true
+            - include: 'scope:source.css'
+        - include: tag-attributes
+
+  common-tag:
+    - match: ^(\s*)([A-Za-z]+\d*)(?:\s*(>)\s*([A-Za-z]+\d*))?
+      captures:
+        2: entity.name.tag.jedi
+        # 3: keyword.operator.hierarchy.jedi
+        4: entity.name.tag.jedi
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        # - include: tag-selector
+        - include: tag-attributes
+        - include: main
+
+  block-extended:
+    - match: ^(\s*)(#[\w\-_]+)(::(before|after))?
+      captures:
+        2: entity.name.tag.jedi
+        3: support.class.pseudo.jedi
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: main
+
+  external-statement:
+    - match: ^(\s*):\s*(external)\s*([\w_]+)\b
+      captures:
+        2: keyword.control.external.jedi
+        3: entity.name.external.jedi
+      push:
+        - match: \n
+          pop: true
+
+  import-statement:
+    - match: ^(\s*):\s*(import)\s*([\w_\-/\.]+)\b
+      captures:
+        2: keyword.control.import.jedi
+        3: variable.parameter.import.jedi
+      push:
+        - match: \n
+          pop: true
+
+  unsafe-statement:
+    - match: ^(\s*):\s*(unsafe)\s*([\w_\-/\.]+)\b
+      captures:
+        2: keyword.control.unsafe.jedi
+        3: variable.other.readwrite.jedi
+      push:
+        - match: \n
+          pop: true
+
+  # block-mixin:
+  tag-selector:
+    - match: ^(\.[\w\-_]+\b)*(#[\w\-_]+)?
+      captures:
+        1: constant.language.class.jedi
+        2: constant.language.id.jedi
+      push:
+        - match: \s
+          pop: true
+
+  tag-attributes:
+    - match: (@[\w\-_]+)\s*(=)\s*
+      captures:
+        1: entity.other.attribute-name.jedi
+        2: punctuation.separator.key-value.jedi
+      push:
+        - match: ('|")
+          scope: punctuation.definition.string.begin.jedi
+          set:
+            - meta_scope: string.quoted.attribute.jedi
+            - match: \1
+              scope: punctuation.definition.string.end.html
+              pop: true
+            - include: template-expression
+        - match: \3
+          scope: string.quoted.attribute.jedi
+          pop: true
+          set: content-value
+
+  template-expression:
+    - match: \{
+      scope: punctuation.definition.expression.begin.jedi
+      push:
+        - match: \}
+          scope: punctuation.definition.expression.end.jedi
+          pop: true
+        - include: expression
+
+  assignment:
+    - match: \s*([\w_]+)\b
+      captures:
+        1: variable.other.readwrite.jedi
+      # push:
+      #   - match: \n|,
+      #     pop: true
+      #   - include: inline-expression
+
+  inline-expression:
+    - match: \=
+      scope: keyword.operator.value.jedi
+      push:
+        - match: \n|,
+          pop: true
+        - include: expression
+
+  expression:
+    - match: ([A-Za-z\d_\.]+)
+      captures:
+        1: variable.other.readwrite.jedi
+    - match: \s*(if)\s*([A-Za-z\d_\.]+)\s*(then)\s*([A-Za-z\d_\.]+)\s*(else)\s*([A-Za-z\d_\.]+)
+      captures:
+        1: keyword.control.conditional.jedi
+        2: variable.other.readwrite.jedi
+        3: keyword.operator.then.jedi
+        4: variable.other.readwrite.jedi
+        5: keyword.control.conditional.jedi
+        6: variable.other.readwrite.jedi
+
+  if-statement:
+    - match: ^(\s*):\s*((?:else if)|if)([^\n]+)
+      captures:
+        2: keyword.control.conditional.jedi
+        # 3: source.js
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: main
+
+  else-statement:
+    - match: ^(\s*):\s*(else)
+      captures:
+        2: keyword.control.conditional.jedi
+        3: variable.other.readwrite.jedi
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: main
+
+  let-statement:
+    - match: ^(\s*):\s*(let)
+      captures:
+        2: storage.type.jedi
+        # 3: source.js
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - match: \n
+          set: main
+        - include: assignment
+
+  for-statement:
+    - match: ^(\s*):\s*(for)\s*\(?([\s\w_]+(?:,[\s\w_]+)*)\)?\s*(in)([^\n]+)\n
+      captures:
+        2: keyword.control.loop.jedi
+        3: variable.parameter.loop.jedi
+        4: keyword.operator.in-loop.jedi
+        5: variable.other.readwrite.jedi
+      push:
+        - match: ^(?!(\1\s)|\s*$)
+          pop: true
+        - include: main
