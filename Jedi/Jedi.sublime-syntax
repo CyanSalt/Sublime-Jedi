@@ -1,10 +1,5 @@
 %YAML 1.2
 ---
-
-# need-to-complete:
-# - if condition fix bug
-# - suffix-if
-
 name: Jedi
 file_extensions:
   - jedi
@@ -47,10 +42,10 @@ contexts:
     - include: text-node
 
   html-tag-info:
+    - include: inline-if-statement
     - include: tag-selector
     - include: tag-attributes
     - include: tag-hierarchy
-    - include: inline-if-statement
     - include: inline-expression
     - include: macro-invoking
 
@@ -95,7 +90,6 @@ contexts:
           pop: true
 
   #### comment end ####
-
   #### HTML tags start ####
 
   script-tag:
@@ -155,7 +149,6 @@ contexts:
         - include: template-expression
 
   #### HTML tags end ####
-
   #### HTML tag info start ####
 
   tag-selector:
@@ -179,7 +172,6 @@ contexts:
         1: entity.other.attribute-name.jedi
         2: punctuation.separator.key-value.jedi
       push:
-        - include: expression
         - include: template-expression
         - match: ('|")
           scope: punctuation.definition.string.begin.jedi
@@ -189,13 +181,13 @@ contexts:
               scope: punctuation.definition.string.end.html
               pop: true
             - include: template-expression
+        - include: expression
         - match: \3
           scope: string.quoted.attribute.jedi
           pop: true
           set: content-value
 
   #### HTML tag info end ####
-
   #### language feature start ####
 
   block-extended:
@@ -269,7 +261,6 @@ contexts:
           scope: variable.parameter.macro.jedi
 
   #### language feature end ####
-
   #### expression start ####
 
   literal:
@@ -329,6 +320,8 @@ contexts:
       push:
         - match: (?=\n|,)
           pop: true
+        - match: (?=then|else\b)
+          pop: true
         - include: expression
     - match: '\s*not\b'
       scope: keyword.control.logic.jedi
@@ -341,17 +334,17 @@ contexts:
     - match: \s*if\b
       scope: keyword.control.conditional.jedi
       push:
-        - match: (?=\n|,)
+        - match: (?=\n|,|\})
           pop: true
         - match: \s*then\b
           scope: keyword.control.conditional.jedi
           push:
-            - match: (?=\n|,)
+            - match: (?=\n|,|\})
               pop: true
             - match: \s*else\b
               scope: keyword.control.conditional.jedi
               push:
-                - match: (?=\n|,)
+                - match: (?=\n|,|\})
                   pop: true
                 - include: expression
             - include: expression
@@ -362,6 +355,7 @@ contexts:
       scope: variable.other.readwrite.jedi
 
   #### expression end ####
+  #### keyword statement start ####
 
   external-statement:
     - match: ^(\s*):\s*(external)
@@ -398,7 +392,7 @@ contexts:
       push:
         - match: \n
           pop: true
-        - include: 'scope:source.js'
+        - include: expression
 
   inline-if-statement:
     - match: \bif\b
