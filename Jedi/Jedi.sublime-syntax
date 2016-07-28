@@ -313,7 +313,8 @@ contexts:
         - include: literal
 
   logic-expression:
-    - match: '({{identifier}})\s*((?:\|\|)|&&|(?:(?:\!|\=)\={1,2}))'
+    - include: equation-expression
+    - match: '({{identifier}})\s*((?:\|\|)|&&)'
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.logic.jedi
@@ -323,10 +324,25 @@ contexts:
         - match: (?=then|else\b)
           pop: true
         - include: expression
-    - match: '\s*not\b'
+    - match: '\b(not|\!)\b'
       scope: keyword.control.logic.jedi
       push:
         - match: \b
+          pop: true
+        - include: expression
+
+  equation-expression:
+    - match: '({{identifier}})\s*((?:\!|\=)\={1,2})'
+      captures:
+        1: variable.other.readwrite.jedi
+        2: keyword.operator.logic.jedi
+      push:
+        - match: (?=\n|,)
+          pop: true
+        - match: (?:\|\|)|&&
+          scope: keyword.operator.logic.jedi
+          pop: true
+        - match: (?=then|else\b)
           pop: true
         - include: expression
 
