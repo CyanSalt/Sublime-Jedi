@@ -20,14 +20,18 @@ contexts:
     - include: comments-buffered
 
   keyword-top-level:
-    - include: external-statement
-    - include: import-statement
-    - include: unsafe-statement
-    - include: debug-statement
+    - include: inline-keyword-statement
     - include: block-keyword-statement
     - include: block-expression
     - include: macro
     - include: php-embedded
+
+  inline-keyword-statement:
+    - include: external-statement
+    - include: import-statement
+    - include: namespace-statement
+    - include: unsafe-statement
+    - include: debug-statement
 
   block-keyword-statement:
     - include: if-statement
@@ -290,11 +294,22 @@ contexts:
         - match: '{{identifier}}'
           scope: variable.parameter.macro.jedi
 
+  namespace-using:
+    - match: \\?\b(?:([\w_]+)\\)*([\w_]+\b)
+      captures:
+        1: entity.name.namespace.jedi
+        2: entity.name.type.class.jedi
+      push:
+        - match: (?=\n|,)
+          pop: true
+
   #### language feature end ####
   #### expression start ####
 
   literal:
-    - match: \d+
+    - match: \d+\.{2}(?:\.|<)\d+
+      scope: constant.language.range.jedi
+    - match: \d+(\.\d+)?
       scope: constant.numeric.jedi
     - match: \b(true|false)\b
       scope: constant.language.boolean.jedi
@@ -335,7 +350,7 @@ contexts:
         - include: expression
 
   arithmetic-expression:
-    - match: '({{identifier}})\s*(\+|\-|×|÷|mul\b|div\b)'
+    - match: '({{identifier}})\s*(\+|\-|×|÷|<{2,3}|>{2,3}|mul\b|div\b|mod\b)'
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.arithmetic.jedi
@@ -362,7 +377,7 @@ contexts:
         - include: expression
 
   equation-expression:
-    - match: '({{identifier}})\s*((\!\=|\=\=|>|<)\=?)'
+    - match: '({{identifier}})\s*(\!\={1,2}|\={2,3}|>\=?|<\=?|<\=>)'
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.logic.jedi
@@ -430,6 +445,16 @@ contexts:
       push:
         - match: \n
           pop: true
+
+  namespace-statement:
+    - match: ^(\s*):\s*(use)\b
+      captures:
+        2: keyword.control.namespace.jedi
+        3: variable.parameter.namespace.jedi
+      push:
+        - match: \n
+          pop: true
+        - include: namespace-using
 
   unsafe-statement:
     - match: ^(\s*):\s*(unsafe)\b
