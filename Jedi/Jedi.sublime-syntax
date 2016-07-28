@@ -58,7 +58,7 @@ contexts:
     - include: macro-data
     - include: property-expression
     - include: function-call
-    # - include: arithmetic-expression
+    - include: arithmetic-expression
     - include: logic-expression
     - include: ternary-expression
     - include: base-variable
@@ -171,25 +171,51 @@ contexts:
         2: entity.name.tag.jedi
 
   tag-attributes:
-    - match: (@[\w\-_]+)\s*(=)\s*
-      captures:
-        1: entity.other.attribute-name.jedi
-        2: punctuation.separator.key-value.jedi
+    - match: \@{2}
+      scope: entity.other.attribute-name.start.jedi
       push:
-        - include: template-expression
-        - match: ('|")
-          scope: punctuation.definition.string.begin.jedi
-          set:
-            - meta_scope: string.quoted.attribute.jedi
-            - match: \1
-              scope: punctuation.definition.string.end.html
-              pop: true
-            - include: template-expression
-        - include: expression
-        - match: \3
-          scope: string.quoted.attribute.jedi
+        - match: (?=\n|@)
           pop: true
-          set: content-value
+        - include: tag-attribute-multi-kv
+    - match: \@\b
+      scope: entity.other.attribute-name.start.jedi
+      push:
+        - match: (?=\n|@)
+          pop: true
+        - include: tag-attribute-kv
+
+  tag-attribute-kv:
+    - match: ([\w\-_]+)\b
+      scope: entity.other.attribute-name.jedi
+      push:
+        - match: \=
+          scope: punctuation.separator.key-value.jedi
+          push:
+            - include: tag-attribute-value
+        - match: (?=\n|@)
+          pop: true
+
+  tag-attribute-multi-kv:
+    - match: ([\w\-_]+)\b
+      scope: entity.other.attribute-name.jedi
+      push:
+        - match: \=
+          scope: punctuation.separator.key-value.jedi
+          push:
+            - include: tag-attribute-value
+        - match: \s
+          pop: true
+
+  tag-attribute-value:
+    - include: template-expression
+    - match: ('|")
+      scope: punctuation.definition.string.begin.jedi
+      set:
+        - meta_scope: string.quoted.attribute.jedi
+        - match: \1
+          scope: punctuation.definition.string.end.html
+          pop: true
+        - include: template-expression
 
   #### HTML tag info end ####
   #### language feature start ####
@@ -309,12 +335,12 @@ contexts:
         - include: expression
 
   arithmetic-expression:
-    - match: '({{identifier}})\s*(\+|\-|mul|div)'
+    - match: '({{identifier}})\s*(\+|\-|×|÷|mul\b|div\b)'
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.arithmetic.jedi
       push:
-        - include: literal
+        - include: expression
 
   logic-expression:
     - include: equation-expression
@@ -336,7 +362,7 @@ contexts:
         - include: expression
 
   equation-expression:
-    - match: '({{identifier}})\s*((?:\!|\=)\={1,2})'
+    - match: '({{identifier}})\s*((\!\=|\=\=|>|<)\=?)'
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.logic.jedi
