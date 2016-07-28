@@ -7,7 +7,7 @@ scope: source.jedi
 variables:
   end_indentation: ^(?!(\1\s)|\s*$) # cannot use directly
   tag_name: '[A-Za-z]+\d*'
-  identifier: '[A-Za-z\d_\.]+'
+  identifier: '[A-Za-z\d_]+'
 
 contexts:
   main:
@@ -23,13 +23,17 @@ contexts:
     - include: external-statement
     - include: import-statement
     - include: unsafe-statement
+    - include: debug-statement
+    - include: block-keyword-statement
+    - include: block-expression
+    - include: macro
+    - include: php-embedded
+
+  block-keyword-statement:
     - include: if-statement
     - include: else-statement
     - include: let-statement
     - include: for-statement
-    - include: block-expression
-    - include: macro
-    - include: php-embedded
 
   layout-top-level:
     - include: block-extended
@@ -374,7 +378,7 @@ contexts:
   #### keyword statement start ####
 
   external-statement:
-    - match: ^(\s*):\s*(external)
+    - match: ^(\s*):\s*(external)\b
       captures:
         2: keyword.control.external.jedi
         3: entity.name.external.jedi
@@ -402,9 +406,18 @@ contexts:
           pop: true
 
   unsafe-statement:
-    - match: ^(\s*):\s*(unsafe)
+    - match: ^(\s*):\s*(unsafe)\b
       captures:
         2: keyword.control.unsafe.jedi
+      push:
+        - match: \n
+          pop: true
+        - include: expression
+
+  debug-statement:
+    - match: ^(\s*):\s*(d)\b
+      captures:
+        2: keyword.control.debug.jedi
       push:
         - match: \n
           pop: true
@@ -419,7 +432,7 @@ contexts:
         - include: expression
 
   if-statement:
-    - match: ^(\s*):\s*((?:else if)|if)
+    - match: ^(\s*):\s*((?:else if)|if)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -429,7 +442,7 @@ contexts:
         - include: main
 
   else-statement:
-    - match: ^(\s*):\s*(else)
+    - match: ^(\s*):\s*(else)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -438,7 +451,7 @@ contexts:
         - include: main
 
   let-statement:
-    - match: ^(\s*):\s*(let)
+    - match: ^(\s*):\s*(let)\b
       captures:
         2: storage.type.jedi
       push:
@@ -449,16 +462,26 @@ contexts:
         - include: assignment
 
   for-statement:
-    - match: ^(\s*):\s*(for)\s*\(?([\s\w_]+(?:,[\s\w_]+)*)\)?\s*(in)\s+({{identifier}})\s*\n
+    - match: ^(\s*):\s*(for)\b
       captures:
         2: keyword.control.loop.jedi
-        3: variable.parameter.loop.jedi
-        4: keyword.operator.in-loop.jedi
-        5: variable.other.readwrite.jedi
       push:
         - match: ^(?!(\1\s)|\s*$)
           pop: true
-        - include: main
+        - match: \n
+          set: main
+        - include: iterator-statement
+
+  iterator-statement:
+    - match: \(?([\s\w_]+(?:,[\s\w_]+){0,3})\)?\s*(in)\b
+      captures:
+        1: variable.parameter.loop.jedi
+        2: keyword.operator.in-loop.jedi
+        3: variable.other.readwrite.jedi
+      push:
+        - match: (?=\n|,)
+          pop: true
+        - include: expression
 
   php-embedded:
     - match: ^\s*-\s+
