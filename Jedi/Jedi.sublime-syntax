@@ -369,8 +369,8 @@ contexts:
         - match: (?=then|else\b)
           pop: true
         - include: expression
-    - match: '\b(not|\!)\b'
-      scope: keyword.control.logic.jedi
+    - match: \bnot\b|!
+      scope: keyword.operator.logic.jedi
       push:
         - match: \b
           pop: true
