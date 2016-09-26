@@ -207,7 +207,7 @@ contexts:
           scope: punctuation.separator.key-value.jedi
           push:
             - include: tag-attribute-value
-        - match: \s
+        - match: (?=\n)|\s
           pop: true
 
   tag-attribute-value:
@@ -295,7 +295,7 @@ contexts:
           scope: variable.parameter.macro.jedi
 
   namespace-using:
-    - match: \\?\b(?:([\w_]+)\\)*([\w_]+\b)
+    - match: \\?\b(?:([\w_]+)(?:\\|/))*([\w_]+\b)
       captures:
         1: entity.name.namespace.jedi
         2: entity.name.type.class.jedi
@@ -343,7 +343,7 @@ contexts:
   function-call:
     - match: '({{identifier}})\('
       captures:
-        1: entity.name.function.jedi
+        1: support.function.call.jedi
       push:
         - match: \)
           pop: true
