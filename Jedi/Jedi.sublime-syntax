@@ -50,7 +50,7 @@ contexts:
     - include: text-node
 
   html-tag-info:
-    - include: inline-if-statement
+    - include: inline-statement
     - include: tag-selector
     - include: tag-attributes
     - include: tag-hierarchy
@@ -211,7 +211,6 @@ contexts:
           pop: true
 
   tag-attribute-value:
-    - include: template-expression
     - match: ('|")
       scope: punctuation.definition.string.begin.jedi
       set:
@@ -220,6 +219,14 @@ contexts:
           scope: punctuation.definition.string.end.html
           pop: true
         - include: template-expression
+    ## include `template-expression` directly is useless, why??
+    - match: \{
+      scope: punctuation.definition.expression.begin.jedi
+      set:
+        - match: \}
+          scope: punctuation.definition.expression.end.html
+          pop: true
+        - include: expression
 
   #### HTML tag info end ####
   #### language feature start ####
@@ -235,16 +242,18 @@ contexts:
         - include: main
 
   macro:
-    - match: ^(\s*)::({{tag_name}})
+    - match: ^(\s*)::({{tag_name}}((?:\.[\w\-_]+\b)*))
       captures:
         2: entity.name.function.macro.jedi
+        3: constant.language.class.macro.jedi
       push:
         - match: ^(?!(\1\s)|\s*$)
           pop: true
         - match: \((.*)\)
           captures:
             1: variable.parameter.macro.jedi
-        - include: html-tag-info
+        ## actually not `tag-selector`, and also support Goto Symbol showing fullname
+        # - include: tag-selector
         - include: main
 
   template-expression:
@@ -427,12 +436,12 @@ contexts:
         - match: \n
           pop: true
         - match: \b[a-z]([\w_]+)\b
-          scope: entity.name.function.jedi
+          scope: support.function.php
           push:
             - match: (?=\n|,)
               pop: true
         - match: \b[A-Z]([\w_]+)\b
-          scope: entity.name.type.class.jedi
+          scope: support.class.php
           push:
             - match: (?=\n|,)
               pop: true
@@ -474,13 +483,19 @@ contexts:
           pop: true
         - include: expression
 
-  inline-if-statement:
-    - match: \bif\b
+  inline-statement:
+    - match: \bif|else\b
       scope: keyword.control.conditional.jedi
       push:
         - match: \n
           pop: true
         - include: expression
+    - match: \bfor\b
+      scope: keyword.control.loop.jedi
+      push:
+        - match: \n
+          pop: true
+        - include: iterator-statement
 
   if-statement:
     - match: ^(\s*):\s*((?:else if)|if)\b
@@ -535,7 +550,7 @@ contexts:
         - include: expression
 
   php-embedded:
-    - match: ^\s*-\s+
+    - match: ^\s*-\s*
       # scope: punctuation.section.embedded.begin.php
       push:
         - meta_scope: meta.embedded.line.php
