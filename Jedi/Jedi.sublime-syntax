@@ -59,6 +59,7 @@ contexts:
 
   expression:
     - include: literal
+    - include: array
     - include: macro-data
     - include: property-expression
     - include: function-call
@@ -151,6 +152,7 @@ contexts:
       scope: punctuation.definition.text.begin.jedi
       push:
         # - meta_scope: string.quoted.content.jedi
+        - meta_scope: text.content.jedi
         - match: \1|\n
           scope: punctuation.definition.text.end.jedi
           pop: true
@@ -330,6 +332,15 @@ contexts:
         - meta_scope: string.quoted.literal.jedi
         - match: \1
           pop: true
+
+  array:
+    - match: \[
+      scope: punctuation.definition.brackets.jedi
+      push:
+        - match: \]
+          scope: punctuation.definition.brackets.jedi
+          pop: true
+        - include: expression
 
   macro-data:
     - match: (\*)\[
