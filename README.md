@@ -1,10 +1,12 @@
 # Sublime-Jedi
 
-A Jedi syntax highlight plugin for Sublime Text/TextMate.
+A Jedi syntax highlight plugin for Sublime Text 3.
 
 Sublime Text/TextMate 的 Jedi 语法高亮插件。
 
 ![Preview](https://cloud.githubusercontent.com/assets/5101076/22195748/7d07eb00-e184-11e6-8f0e-914aa3fe20bf.png)
+
+*(Color Scheme: [Boxy Yesterday](https://packagecontrol.io/packages/Boxy%20Theme) and Solarized Dark)*
 
 **Notice: Sublime-Jedi has two versions now. New `sublime-syntax` definition is supported in the latest version of Sublime Text 3, so Sublime-Jedi's major release will not support Sublime Text 2 or TextMate in future. You can find the old package at [Sublime-Jedi-Legacy](https://github.com/CyanSalt/Sublime-Jedi-Legacy). The new definition has many exciting feature, e.g. inline PHP syntax, so the major release is recommended.**
 
