@@ -2,7 +2,7 @@
 
 A Jedi syntax highlight plugin for Sublime Text 3.
 
-Sublime Text/TextMate 的 Jedi 语法高亮插件。
+Sublime Text 3 的 Jedi 语法高亮插件。
 
 ![Preview](https://cloud.githubusercontent.com/assets/5101076/22195748/7d07eb00-e184-11e6-8f0e-914aa3fe20bf.png)
 
