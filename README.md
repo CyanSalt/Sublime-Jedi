@@ -4,6 +4,10 @@ A Jedi syntax highlight plugin for Sublime Text/TextMate.
 
 Sublime Text/TextMate 的 Jedi 语法高亮插件。
 
+![Boxy Yesterday](https://cloud.githubusercontent.com/assets/5101076/22195177/97d8ac9c-e181-11e6-8b89-4ace50b32d67.png)
+
+![Solarized Dark](https://cloud.githubusercontent.com/assets/5101076/22195178/98fde59c-e181-11e6-8c22-9c10182c4038.png)
+
 **Notice: Sublime-Jedi has two versions now. New `sublime-syntax` definition is supported in the latest version of Sublime Text 3, so Sublime-Jedi's major release will not support Sublime Text 2 or TextMate in future. You can find the old package at [Sublime-Jedi-Legacy](https://github.com/CyanSalt/Sublime-Jedi-Legacy). The new definition has many exciting feature, e.g. inline PHP syntax, so the major release is recommended.**
 
 **请注意： Sublime-Jedi 现在有两个版本。Sublime Text 3 的最新版本支持新的 `sublime-syntax` 语法，因此 Sublime-Jedi 的主要版本未来将不会支持 Sublime Text 2 以及 TextMate。你可以在 [Sublime-Jedi-Legacy](https://github.com/CyanSalt/Sublime-Jedi-Legacy) 找到旧版本的插件包。新的语法有非常多一颗赛艇的特性，例如行内PHP语法等，因此强烈推荐使用新版。**
