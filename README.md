@@ -35,11 +35,6 @@ You can find the legacy version at [Sublime-Jedi-Legacy](https://github.com/Cyan
 *  Select 'Preference' -> 'Browse Packages'
 *  Download **Sublime-Jedi** as .zip, or clone it to your desktop,
     then copy the folder 'Jedi' into the folder 'Package' which is open above.
-
-    OR
-
-*  Copy the file ['Jedi.sublime-package'](https://raw.githubusercontent.com/cyansalt/sublime-jedi/master/Jedi.sublime-package) into 'Installed Packages' folder
-    (with the same directory of the folder 'Package').
 *  Restart Sublime Text.
 
 &nbsp;
@@ -47,11 +42,6 @@ You can find the legacy version at [Sublime-Jedi-Legacy](https://github.com/Cyan
 *  选择 'Preference' -> 'Browse Packages'
 *  下载 **Sublime-Jedi** 的 .zip 文件，或者直接 clone repo，
     将 “Jedi” 文件夹复制到上面打开的目录中。
-
-    或者
-
-*  把 ['Jedi.sublime-package'](https://raw.githubusercontent.com/cyansalt/sublime-jedi/master/Jedi.sublime-package) 这个文件复制到 “Installed Packages” 目录下
-    （和 “Package” 在同一个目录下）
 *  重新启动 Sublime Text。
 
 #### Can I Modify It?
