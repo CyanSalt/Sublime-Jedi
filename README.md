@@ -19,10 +19,14 @@ Sublime Text/TextMate 的 Jedi 语法高亮插件。
 This plugin is created for Sublime Text 3. You can use either major release or legacy version in Sublime Text 3.
 Since it use .tmLanguage, the legacy version may support TextMate or legacy versions of Sublime Text.
 
+You can find the legacy version at [Sublime-Jedi-Legacy](https://github.com/CyanSalt/Sublime-Jedi-Legacy) now.
+
 *Notice: There is no guarantee that the legacy will work in future.*
 
 本插件是为 Sublime Text 3 撰写的。在 Sublime Text 3 中，你可以使用新版或旧版任何一种。
 由于旧版使用了 .tmLanguage 语法，因此理论上来说也支持 TextMate 和旧版本的 Sublime Text。
+
+你可以在 [Sublime-Jedi-Legacy](https://github.com/CyanSalt/Sublime-Jedi-Legacy) 这里找到旧版本的插件。
 
 *注：旧版不会保证未来依然可用。*
 
