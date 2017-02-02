@@ -462,7 +462,7 @@ contexts:
   #### keyword statement start ####
 
   external-statement:
-    - match: ^(?:\s*)(:\s*external)\b
+    - match: ^(?:\s*):\s*(external)\b
       captures:
         1: keyword.control.external.jedi
         # 2: entity.name.external.jedi
@@ -481,7 +481,7 @@ contexts:
               pop: true
 
   import-statement:
-    - match: ^(?:\s*)(:\s*import)\s*([\w_\-/\.]+)\b
+    - match: ^(?:\s*):\s*(import)\s*([\w_\-/\.]+)\b
       captures:
         1: keyword.control.import.jedi
         2: variable.parameter.import.jedi
@@ -490,7 +490,7 @@ contexts:
           pop: true
 
   namespace-statement:
-    - match: ^(?:\s*)(:\s*use)\b
+    - match: ^(?:\s*):\s*(use)\b
       captures:
         1: keyword.control.namespace.jedi
         # 2: variable.parameter.namespace.jedi
@@ -500,7 +500,7 @@ contexts:
         - include: namespace-using
 
   unsafe-statement:
-    - match: ^(?:\s*)(:\s*unsafe)\b
+    - match: ^(?:\s*):\s*(unsafe)\b
       captures:
         1: keyword.control.unsafe.jedi
       push:
@@ -532,7 +532,7 @@ contexts:
         - include: iterator-statement
 
   if-statement:
-    - match: ^(\s*)(:\s*(?:else )?if)\b
+    - match: ^(\s*):\s*((?:else )?if)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -542,7 +542,7 @@ contexts:
         - include: main
 
   else-statement:
-    - match: ^(\s*)(:\s*else)\b
+    - match: ^(\s*):\s*(else)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -551,7 +551,7 @@ contexts:
         - include: main
 
   let-statement:
-    - match: ^(\s*)(:\s*let)\b
+    - match: ^(\s*):\s*(let)\b
       captures:
         2: storage.type.jedi
       push:
@@ -564,7 +564,7 @@ contexts:
           scope: punctuation.separator.comma.jedi
 
   for-statement:
-    - match: ^(\s*)(:\s*for)\b
+    - match: ^(\s*):\s*(for)\b
       captures:
         2: keyword.control.loop.jedi
       push:
