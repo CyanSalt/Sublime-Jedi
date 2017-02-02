@@ -1,0 +1,21 @@
+{
+	"scope": "source.jedi",
+	"completions":
+	[
+		{ "trigger": "jedi", "contents": ":import _skeleton\n\n\t#stylesheets::after\n\n\t#main\n\t\t${1}\n" },
+		{ "trigger": "if\tif-then-else", "contents": "if ${1:condition} then ${2:expr1} else ${3:expr2}" },
+		{ "trigger": ":d", "contents": ":d ${1:url}" },
+		{ "trigger": ":else", "contents": ":else ${1:if }" },
+		{ "trigger": ":external", "contents": ":external ${1:isset}" },
+		{ "trigger": ":for", "contents": ":for ${1:item} in ${2:list}" },
+		{ "trigger": ":if", "contents": ":if ${1:expr}" },
+		{ "trigger": ":import", "contents": ":import ${1:_skeleton}" },
+		{ "trigger": ":let", "contents": ":let ${1:var} = " },
+		{ "trigger": ":use", "contents": ":use ${1:Combine}" },
+		{ "trigger": ":unsafe", "contents": ":unsafe ${1:Combine.script([''])}" },
+		{ "trigger": "script", "contents": "script\n\t!\n\t" },
+		{ "trigger": "style", "contents": "style\n\t!\n\t" },
+		{ "trigger": "@href", "contents": "@href=\"${1:link}\"" },
+		{ "trigger": "@src", "contents": "@src=\"${1:link}\"" },
+	]
+}
