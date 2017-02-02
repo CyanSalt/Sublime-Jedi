@@ -5,9 +5,9 @@ file_extensions:
   - jedi
 scope: source.jedi
 variables:
+  identifier: '[_$[:alpha:]][_$[:alnum:]]*'
+  tag_name: '\b[[:alpha:]]+\d*\b'
   end_indentation: ^(?!(\1\s)|\s*$) # cannot use directly
-  tag_name: '[A-Za-z]+\d*'
-  identifier: '[A-Za-z\d_]+'
 
 contexts:
   main:
@@ -173,7 +173,7 @@ contexts:
   tag-hierarchy:
     - match: (>)\s*({{tag_name}})
       captures:
-        # 1: keyword.operator.hierarchy.jedi
+        1: punctuation.separator.combinator.jedi
         2: entity.name.tag.jedi
 
   tag-attributes:
@@ -198,6 +198,8 @@ contexts:
           scope: punctuation.separator.key-value.jedi
           push:
             - include: tag-attribute-value
+            - match: (?=\n)
+              pop: true
         - match: (?=\n|@)
           pop: true
 
@@ -229,6 +231,7 @@ contexts:
           scope: punctuation.definition.expression.end.html
           pop: true
         - include: expression
+    - include: base-variable
 
   #### HTML tag info end ####
   #### language feature start ####
@@ -297,20 +300,25 @@ contexts:
         - include: expression
 
   macro-invoking:
-    - match: (\=)\s*\[
+    - match: (\=)\s*(\[)
       captures:
         1: keyword.operator.value.jedi
+        2: punctuation.definition.brackets.jedi
       push:
         - match: \]
+          scope: punctuation.definition.brackets.jedi
           pop: true
+        - match: \,
+          scope: punctuation.separator.comma.jedi
         - match: '{{identifier}}'
           scope: variable.parameter.macro.jedi
 
   namespace-using:
-    - match: \\?\b(?:([\w_]+)(?:\\|/))*([\w_]+\b)
+    - match: \\?\b(?:([\w_]+)(\\|/))*([\w_]+\b)
       captures:
         1: entity.name.namespace.jedi
-        2: entity.name.type.class.jedi
+        2: punctuation.separator.namespace.jedi
+        3: entity.name.type.class.jedi
       push:
         - match: (?=\n|,)
           pop: true
@@ -351,23 +359,37 @@ contexts:
         - match: \]
           pop: true
         - include: literal
+    - match: (\*)(\.)
+      captures:
+        1: variable.language.macro.jedi
+        2: keyword.operator.property.jedi
+      push:
+        - match: \b
+          pop: true
+        - include: expression
 
   property-expression:
-    - match: '({{identifier}})\.\b'
+    - match: '(?:([A-Z]{{identifier}})|({{identifier}}))(\.)\b'
       captures:
-        1: variable.other.readwrite.jedi
+        1: support.class.jedi
+        2: variable.other.readwrite.jedi
+        3: keyword.operator.property.jedi
       push:
         - match: \b
           pop: true
         - include: expression
 
   function-call:
-    - match: '({{identifier}})\('
+    - match: '({{identifier}})(\()'
       captures:
         1: support.function.call.jedi
+        2: punctuation.section.group.start.jedi
       push:
         - match: \)
+          scope: punctuation.section.group.end.jedi
           pop: true
+        - match: \,
+          scope: punctuation.separator.comma.jedi
         - include: expression
 
   arithmetic-expression:
@@ -375,8 +397,8 @@ contexts:
       captures:
         1: variable.other.readwrite.jedi
         2: keyword.operator.arithmetic.jedi
-      push:
-        - include: expression
+      # push:
+      #   - include: expression
 
   logic-expression:
     - include: equation-expression
@@ -440,10 +462,10 @@ contexts:
   #### keyword statement start ####
 
   external-statement:
-    - match: ^(\s*):\s*(external)\b
+    - match: ^(?:\s*)(:\s*external)\b
       captures:
-        2: keyword.control.external.jedi
-        3: entity.name.external.jedi
+        1: keyword.control.external.jedi
+        # 2: entity.name.external.jedi
       push:
         - match: \n
           pop: true
@@ -459,37 +481,37 @@ contexts:
               pop: true
 
   import-statement:
-    - match: ^(\s*):\s*(import)\s*([\w_\-/\.]+)\b
+    - match: ^(?:\s*)(:\s*import)\s*([\w_\-/\.]+)\b
       captures:
-        2: keyword.control.import.jedi
-        3: variable.parameter.import.jedi
+        1: keyword.control.import.jedi
+        2: variable.parameter.import.jedi
       push:
         - match: \n
           pop: true
 
   namespace-statement:
-    - match: ^(\s*):\s*(use)\b
+    - match: ^(?:\s*)(:\s*use)\b
       captures:
-        2: keyword.control.namespace.jedi
-        3: variable.parameter.namespace.jedi
+        1: keyword.control.namespace.jedi
+        # 2: variable.parameter.namespace.jedi
       push:
         - match: \n
           pop: true
         - include: namespace-using
 
   unsafe-statement:
-    - match: ^(\s*):\s*(unsafe)\b
+    - match: ^(?:\s*)(:\s*unsafe)\b
       captures:
-        2: keyword.control.unsafe.jedi
+        1: keyword.control.unsafe.jedi
       push:
         - match: \n
           pop: true
         - include: expression
 
   debug-statement:
-    - match: ^(\s*):\s*(d)\b
+    - match: ^(?:\s*):\s*(d)\b
       captures:
-        2: keyword.control.debug.jedi
+        1: keyword.control.debug.jedi
       push:
         - match: \n
           pop: true
@@ -510,7 +532,7 @@ contexts:
         - include: iterator-statement
 
   if-statement:
-    - match: ^(\s*):\s*((?:else if)|if)\b
+    - match: ^(\s*)(:\s*(?:else )?if)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -520,7 +542,7 @@ contexts:
         - include: main
 
   else-statement:
-    - match: ^(\s*):\s*(else)\b
+    - match: ^(\s*)(:\s*else)\b
       captures:
         2: keyword.control.conditional.jedi
       push:
@@ -529,7 +551,7 @@ contexts:
         - include: main
 
   let-statement:
-    - match: ^(\s*):\s*(let)\b
+    - match: ^(\s*)(:\s*let)\b
       captures:
         2: storage.type.jedi
       push:
@@ -538,9 +560,11 @@ contexts:
         - match: \n
           set: main
         - include: assignment
+        - match: \,
+          scope: punctuation.separator.comma.jedi
 
   for-statement:
-    - match: ^(\s*):\s*(for)\b
+    - match: ^(\s*)(:\s*for)\b
       captures:
         2: keyword.control.loop.jedi
       push:
