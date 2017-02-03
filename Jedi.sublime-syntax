@@ -6,7 +6,7 @@ file_extensions:
 scope: source.jedi
 variables:
   identifier: '[_$[:alpha:]][_$[:alnum:]]*'
-  tag_name: '\b[[:alpha:]]+\d*\b'
+  tag_name: '\b(?:mip-)?[[:alpha:]]+[1-6]?\b'
   end_indentation: ^(?!(\1\s)|\s*$) # cannot use directly
 
 contexts:
@@ -231,6 +231,7 @@ contexts:
           scope: punctuation.definition.expression.end.html
           pop: true
         - include: expression
+    - include: function-call
     - include: base-variable
 
   #### HTML tag info end ####
@@ -254,9 +255,16 @@ contexts:
       push:
         - match: ^(?!(\1\s)|\s*$)
           pop: true
-        - match: \((.*?)\)
-          captures:
-            1: variable.parameter.macro.jedi
+        - match: \(
+          scope: punctuation.section.group.start.jedi
+          push:
+            - match: \)
+              scope: punctuation.section.group.end.jedi
+              pop: true
+            - match: \,
+              scope: punctuation.separator.comma.jedi
+            - match: ({{identifier}})
+              scope: variable.parameter.macro.jedi
         - include: tag-attributes
         ## actually not `tag-selector`, and also support Goto Symbol showing fullname
         # - include: tag-selector
@@ -393,25 +401,21 @@ contexts:
         - include: expression
 
   arithmetic-expression:
-    - match: '({{identifier}})\s*(\+|\-|×|÷|<{2,3}|>{2,3}|mul\b|div\b|mod\b)'
-      captures:
-        1: variable.other.readwrite.jedi
-        2: keyword.operator.arithmetic.jedi
+    - match: (\+|\-|×|÷|<{2,3}|>{2,3}|mul\b|div\b|mod\b)
+      scope: keyword.operator.arithmetic.jedi
       # push:
       #   - include: expression
 
   logic-expression:
     - include: equation-expression
-    - match: '({{identifier}})\s*((?:\|\|)|&&)'
-      captures:
-        1: variable.other.readwrite.jedi
-        2: keyword.operator.logic.jedi
-      push:
-        - match: (?=\n|,)
-          pop: true
-        - match: (?=then|else\b)
-          pop: true
-        - include: expression
+    - match: ((?:\|\|)|&&)
+      scope: keyword.operator.logic.jedi
+      # push:
+      #   - match: (?=\n|,)
+      #     pop: true
+      #   - match: (?=then|else\b)
+      #     pop: true
+      #   - include: expression
     - match: \bnot\b|!
       scope: keyword.operator.logic.jedi
       push:
@@ -420,19 +424,14 @@ contexts:
         - include: expression
 
   equation-expression:
-    - match: '({{identifier}})\s*(\!\={1,2}|\={2,3}|>\=?|<\=?|<\=>)'
-      captures:
-        1: variable.other.readwrite.jedi
-        2: keyword.operator.logic.jedi
-      push:
-        - match: (?=\n|,)
-          pop: true
-        - match: (?:\|\|)|&&
-          scope: keyword.operator.logic.jedi
-          pop: true
-        - match: (?=then|else\b)
-          pop: true
-        - include: expression
+    - match: (\!\={1,2}|\={2,3}|>\=?|<\=?|<\=>)
+      scope: keyword.operator.logic.jedi
+      # push:
+      #   - match: (?=\n|,)
+      #     pop: true
+      #   - match: (?=then|else\b)
+      #     pop: true
+      #   - include: expression
 
   ternary-expression:
     - match: \s*if\b
@@ -479,15 +478,18 @@ contexts:
           push:
             - match: (?=\n|,)
               pop: true
+        - match: \,
+          scope: punctuation.separator.comma.jedi
 
   import-statement:
-    - match: ^(?:\s*):\s*(import)\s*([\w_\-/\.]+)\b
+    - match: ^(\s*):\s*(import)\s*([\w_\-/\.]+)?\b
       captures:
-        1: keyword.control.import.jedi
-        2: variable.parameter.import.jedi
+        2: keyword.control.import.jedi
+        3: variable.parameter.import.jedi
       push:
-        - match: \n
+        - match: ^(?!(\1\s)|\s*$)
           pop: true
+        - include: main
 
   namespace-statement:
     - match: ^(?:\s*):\s*(use)\b
@@ -497,6 +499,8 @@ contexts:
       push:
         - match: \n
           pop: true
+        - match: \,
+          scope: punctuation.separator.comma.jedi
         - include: namespace-using
 
   unsafe-statement:

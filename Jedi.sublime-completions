@@ -2,7 +2,7 @@
 	"scope": "source.jedi",
 	"completions":
 	[
-		{ "trigger": "jedi", "contents": ":import _skeleton\n\n\t#stylesheets::after\n\n\t#main\n\t\t${1}\n" },
+		{ "trigger": "jedi", "contents": ":import _skeleton\n\n\t#stylesheets::after\n\n\t#main\n\t\t${1}\n\n\t#defer-scripts::after\n" },
 		{ "trigger": "if\tif-then-else", "contents": "if ${1:condition} then ${2:expr1} else ${3:expr2}" },
 		{ "trigger": ":d", "contents": ":d ${1:url}" },
 		{ "trigger": ":else", "contents": ":else ${1:if }" },
@@ -13,9 +13,11 @@
 		{ "trigger": ":let", "contents": ":let ${1:var} = " },
 		{ "trigger": ":use", "contents": ":use ${1:Combine}" },
 		{ "trigger": ":unsafe", "contents": ":unsafe ${1:Combine.script([''])}" },
-		{ "trigger": "script", "contents": "script\n\t!\n\t" },
-		{ "trigger": "style", "contents": "style\n\t!\n\t" },
-		{ "trigger": "@href", "contents": "@href=\"${1:link}\"" },
-		{ "trigger": "@src", "contents": "@src=\"${1:link}\"" },
+		{ "trigger": "img", "contents": "img @src=\"${1}\"" },
+		{ "trigger": "link", "contents": "link @rel=\"stylesheet\" @href=\"${1}\"" },
+		{ "trigger": "script", "contents": "script = []\n\t!\n\t\t" },
+		{ "trigger": "style", "contents": "style\n\t!\n\t\t" },
+		{ "trigger": "@href", "contents": "@href=\"${1}\"" },
+		{ "trigger": "@src", "contents": "@src=\"${1}\"" },
 	]
 }
