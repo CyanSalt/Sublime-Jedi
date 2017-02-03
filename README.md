@@ -32,17 +32,17 @@ Since it use .tmLanguage, the legacy version may support TextMate or legacy vers
 
 ### Install (in Sublime Text)
 
-*  Select 'Preference' -> 'Browse Packages'
-*  Download **Sublime-Jedi** as .zip, or clone it to your desktop,
-    then copy the folder 'Jedi' into the folder 'Package' which is open above.
-*  Restart Sublime Text.
+*  Make sure you have installed [Package Control](https://packagecontrol.io/installation) Plugin
+*  Click 'Preference' -> 'Package Control' -> 'Install Package'
+*  Search 'Jedi Syntax' and install the plugin
+*  Restart Sublime Text after the process finishing
 
 &nbsp;
 
-*  选择 'Preference' -> 'Browse Packages'
-*  下载 **Sublime-Jedi** 的 .zip 文件，或者直接 clone repo，
-    将 “Jedi” 文件夹复制到上面打开的目录中。
-*  重新启动 Sublime Text。
+*  确保已经安装了 [Package Control](https://packagecontrol.io/installation) 插件
+*  依次选择 'Preference' -> 'Package Control' -> 'Install Package'
+*  搜索并安装 'Jedi Syntax'
+*  在后台任务结束后重启 Sublime Text
 
 ### Can I Modify It?
 
