@@ -596,8 +596,9 @@ contexts:
       push:
         - meta_scope: meta.embedded.line.php
         - meta_content_scope: source.php
-        - match: \n
-          pop: true
         - include: 'scope:source.php'
+      with_prototype:
+        - match: (?=\n)
+          pop: true
 
   #### keyword statement end ####
