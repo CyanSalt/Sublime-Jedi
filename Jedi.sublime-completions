@@ -3,7 +3,6 @@
 	"completions":
 	[
 		{ "trigger": "jedi", "contents": ":import _skeleton\n\n\t#stylesheets::after\n\n\t#main\n\t\t${1}\n\n\t#defer-scripts::after\n" },
-		{ "trigger": "if\tif-then-else", "contents": "if ${1:condition} then ${2:expr1} else ${3:expr2}" },
 		{ "trigger": ":d", "contents": ":d ${1:url}" },
 		{ "trigger": ":else", "contents": ":else ${1:if }" },
 		{ "trigger": ":external", "contents": ":external ${1:isset}" },
